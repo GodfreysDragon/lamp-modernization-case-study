@@ -8,6 +8,8 @@ class StoreCustomerRequest extends FormRequest
 {
     /**
      * Used for both create and update.
+     *
+     * @return array<string, mixed>
      */
     public function rules(): array
     {

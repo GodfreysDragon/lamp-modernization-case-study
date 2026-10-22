@@ -16,11 +16,19 @@ class Customer extends Model
     /** @use HasFactory<CustomerFactory> */
     use HasFactory, SoftDeletes;
 
+    /** @return HasMany<Ticket, $this> */
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
     }
 
+    /** @return HasMany<Ticket, $this> */
+    public function openTickets(): HasMany
+    {
+        return $this->tickets()->unresolved();
+    }
+
+    /** @param  Builder<self>  $query */
     public function scopeSearch(Builder $query, ?string $term): void
     {
         $query->when($term, fn (Builder $q) => $q->where(fn (Builder $q) => $q

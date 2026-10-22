@@ -1,0 +1,9 @@
+# Static analysis of the legacy code at the same level as modern/ (see README).
+# Run from the repo root:  modern/vendor/bin/phpstan analyse -c legacy/phpstan.neon
+parameters:
+    paths:
+        - .
+    excludePaths:
+        - docker/
+    level: 6
+    phpVersion: 70400

@@ -26,6 +26,7 @@ class User extends Authenticatable
         ];
     }
 
+    /** @return HasMany<Ticket, $this> */
     public function assignedTickets(): HasMany
     {
         return $this->hasMany(Ticket::class, 'assignee_id');

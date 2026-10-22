@@ -30,6 +30,12 @@ enum TicketPriority: string
         };
     }
 
+    /**
+     * @template T of CarbonInterface
+     *
+     * @param  T  $from
+     * @return T
+     */
     public function dueFrom(CarbonInterface $from): CarbonInterface
     {
         return $from->copy()->addHours($this->slaHours());

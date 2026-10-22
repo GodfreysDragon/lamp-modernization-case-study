@@ -49,22 +49,26 @@ class Ticket extends Model
         });
     }
 
+    /** @return BelongsTo<Customer, $this> */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class)->withTrashed();
     }
 
+    /** @return BelongsTo<User, $this> */
     public function assignee(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assignee_id');
     }
 
+    /** @return HasMany<Comment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class)->oldest();
     }
 
     /**
+     * @param  Builder<self>  $query
      * @param  array{status?: ?string, q?: ?string, assignee?: int|string|null}  $filters
      */
     public function scopeFilter(Builder $query, array $filters): void
@@ -77,11 +81,13 @@ class Ticket extends Model
             ->when($filters['assignee'] ?? null, fn (Builder $q, $assignee) => $q->where('assignee_id', $assignee));
     }
 
+    /** @param  Builder<self>  $query */
     public function scopeUnresolved(Builder $query): void
     {
         $query->where('status', '!=', TicketStatus::Closed);
     }
 
+    /** @param  Builder<self>  $query */
     public function scopeOverdue(Builder $query): void
     {
         $query->unresolved()->whereNotNull('due_at')->where('due_at', '<', Carbon::now());

@@ -8,6 +8,7 @@ use App\Http\Resources\CustomerResource;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -95,7 +96,8 @@ class TicketController extends Controller
         return redirect()->route('tickets.index')->with('success', 'Ticket deleted.');
     }
 
-    private function agents()
+    /** @return Collection<int, User> */
+    private function agents(): Collection
     {
         return User::orderBy('name')->get(['id', 'name']);
     }

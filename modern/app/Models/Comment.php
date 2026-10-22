@@ -15,6 +15,7 @@ class Comment extends Model
     use HasFactory;
 
     // Adding a comment bumps the ticket's updated_at, like the legacy app did by hand.
+    /** @var list<string> */
     protected $touches = ['ticket'];
 
     protected function casts(): array
@@ -24,11 +25,13 @@ class Comment extends Model
         ];
     }
 
+    /** @return BelongsTo<Ticket, $this> */
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

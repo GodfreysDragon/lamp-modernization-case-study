@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -20,7 +19,7 @@ class CustomerController extends Controller
 
         $customers = Customer::query()
             ->search($search)
-            ->withCount(['tickets as open_tickets_count' => fn (Builder $q) => $q->unresolved()])
+            ->withCount('openTickets')
             ->orderBy('name')
             ->paginate(25)
             ->withQueryString();

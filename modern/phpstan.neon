@@ -1,0 +1,11 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - database/
+        - routes/
+    level: 6
+    # Read each model's casts() body, so enum and datetime casts are typed.
+    parseModelCastsMethod: true
