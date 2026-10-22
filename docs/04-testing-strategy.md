@@ -1,11 +1,12 @@
 # 4. Testing strategy
 
-The legacy app had zero tests. The modern app ships with **111** (98 Pest + 13 Vitest), and they run in about 7 seconds.
+The legacy app had zero tests. The modern app ships with **112** (99 Pest, one of them a real-browser test, plus 13 Vitest), and they run in about 20 seconds. Line coverage is **95.1%**, measured in CI.
 
 ```bash
 cd modern
-php artisan test          # Pest: characterization + unit + feature
-npm test                  # Vitest: Vue components
+npx playwright install chromium   # once, for the browser test
+php artisan test                  # Pest: characterization + unit + feature + browser
+npm test                          # Vitest: Vue components
 ```
 
 ## The four layers
@@ -88,16 +89,32 @@ it('runs the same number of queries for 2 tickets or 40', function () {
 ```
 This is the test that stops the N+1 problem from creeping back in six months from now. `Model::preventLazyLoading()` backs it up by throwing on any accidental lazy load in the dev and test environments.
 
+## One browser test, end to end
+[`tests/Browser/TicketWorkflowTest.php`](../modern/tests/Browser/TicketWorkflowTest.php)
+
+The feature tests prove the server side and the Vitest tests prove individual components. One test drives the whole thing in a real Chromium, using the Pest browser plugin with Playwright: log in, find a customer through the autocomplete, create a ticket, change its status from the dropdown, and add a comment containing a `<script>` tag. It asserts that the tag shows as text and never runs, and that the page logged no JavaScript errors.
+
+It's deliberately just one test. Browser tests are slow and brittle compared with feature tests, so they're kept for the path a real agent takes every day.
+
 ## Coverage
 
-There's no code coverage report yet, because the local PHP build has neither Xdebug nor PCOV. To produce one:
+CI measures line coverage with PCOV on every push: **95.1%**. The build fails if it drops below 90%. To run it locally you need a coverage driver:
 
 ```bash
 pecl install pcov     # or enable Xdebug
 php artisan test --coverage --min=90
 ```
 
-Every controller action, form request, policy method, enum method and import branch has at least one test that hits it, but that's from reading the code, not a measured number. Add `--coverage --min=…` to CI once a coverage driver is available.
+## Static analysis
+
+[Larastan](https://github.com/larastan/larastan) (PHPStan for Laravel) checks `modern/` at **level 6** in CI, with zero errors. The same level on the legacy code finds **43**, including variables that may be used before they're set. PHPStan checks types and logic, not security, so it doesn't see the SQL injection or XSS. That's what the audit and the regression tests above are for.
+
+```bash
+cd modern && vendor/bin/phpstan analyse                     # modern: 0 errors
+cd .. && modern/vendor/bin/phpstan analyse -c legacy/phpstan.neon  # legacy: 43 errors
+```
+
+The jump to level 7 is all in the legacy import command, which reads untyped rows straight from the old database.
 
 ## CI
 
@@ -106,7 +123,9 @@ The core steps are below. The full workflow is [`.github/workflows/ci.yml`](../.
 ```yaml
 - run: composer install --no-interaction
 - run: npm ci && npm run build
+- run: npx playwright install --with-deps chromium
 - run: vendor/bin/pint --test
-- run: php artisan test
+- run: vendor/bin/phpstan analyse
+- run: php artisan test --coverage --min=90
 - run: npm test
 ```

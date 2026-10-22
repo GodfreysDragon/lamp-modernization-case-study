@@ -12,7 +12,9 @@ A complete, runnable before-and-after of modernizing a legacy PHP/MySQL applicat
 | Auth | MD5, SQL-injectable login, no rate limit, one endpoint with no login check | bcrypt (transparent upgrade from MD5), throttled, policies on every write |
 | Queries for a 20-row ticket list | 62 | 5 (constant, asserted by tests) |
 | Business rules | SLA defined twice (inconsistently); overdue check broken every December | One enum, one model method, unit-tested |
-| Tests | None | **111** (98 Pest + 13 Vitest), ~7s |
+| Tests | None | **112** (98 Pest + 1 real-browser + 13 Vitest), ~20s |
+| Code coverage | — | **95.1%** (measured in CI, must stay above 90%) |
+| Static analysis (PHPStan level 6) | 43 errors | **0** |
 | Data migration | — | Idempotent, dry-runnable `php artisan legacy:import` that cleans up 15 years of drift |
 
 **The app:** *HelpDesk Pro*, a support-ticket system of the kind a small company built in 2009 and still runs. It has agents, customers, tickets with priorities and SLAs, comments and internal notes, and a dashboard. The legacy code is written from scratch to faithfully reproduce the patterns found in real codebases of that era, including the security holes, the copy-pasted business rules and the messy data.
@@ -55,6 +57,7 @@ composer install && cp .env.example .env && php artisan key:generate
 touch database/database.sqlite && php artisan migrate --seed
 npm install && npm run build
 php artisan serve        # http://localhost:8000 (admin / admin123)
+npx playwright install chromium   # once, for the browser test
 php artisan test && npm test
 ```
 
@@ -70,7 +73,7 @@ docker compose up        # http://localhost:8080/login.php (admin / admin123)
 
 ## Limitations
 
-- No measured code coverage yet. Coverage is argued per finding in the [testing strategy](docs/04-testing-strategy.md).
+- The static-analysis figure measures types and logic, not security. The security findings are covered by the [audit](docs/01-legacy-audit.md) and its regression tests.
 - The [business case](docs/05-business-case.md) figures are a worked example with stated assumptions, not client data.
 
 ## Repository layout
@@ -86,7 +89,7 @@ modern/                    the "after": Laravel 13 + Vue 3 (Inertia)
   app/Enums, Models, Http/{Controllers,Requests,Resources}, Policies
   app/Console/Commands/ImportLegacyData.php
   resources/js/{pages,components,layouts}
-  tests/{Characterization,Unit,Feature}  +  resources/js/**/*.test.js
+  tests/{Characterization,Unit,Feature,Browser}  +  resources/js/**/*.test.js
 docs/                      the case study
 ```
 
