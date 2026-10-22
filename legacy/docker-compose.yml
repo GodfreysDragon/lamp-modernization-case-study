@@ -1,0 +1,25 @@
+# Runs the legacy app the way it ran in production: PHP 7.4 + Apache + MySQL 5.7.
+# Usage: docker compose up  ->  http://localhost:8080/login.php  (admin / admin123)
+services:
+  web:
+    build: ./docker
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: db
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: hunter2
+      MYSQL_DATABASE: helpdesk
+    command: --sql-mode=""
+    ports:
+      - "3307:3306"   # so the modern app's `legacy:import` can read it
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/02-seed.sql

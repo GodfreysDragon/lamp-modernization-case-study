@@ -1,0 +1,20 @@
+body { font-family: Verdana, Arial, sans-serif; font-size: 12px; background: #e8e8e8; margin: 0; }
+#wrapper { width: 960px; margin: 0 auto; background: #fff; border: 1px solid #ccc; }
+#header { background: #336699; color: #fff; padding: 10px; }
+#header a { color: #fff; }
+#header h1 { margin: 0; font-size: 20px; }
+#nav { margin-top: 5px; }
+#content { padding: 10px; min-height: 400px; }
+#footer { font-size: 10px; color: #999; padding: 10px; border-top: 1px solid #ccc; }
+table.list { border-collapse: collapse; }
+table.list th { background: #ddd; text-align: left; }
+table.list td, table.list th { border: 1px solid #ccc; }
+tr.overdue td { background: #fdd; }
+.badge { color: #fff; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+.msg { background: #ffc; border: 1px solid #cc9; padding: 5px; margin-bottom: 10px; }
+.error { color: #c00; font-weight: bold; }
+#comments li { margin-bottom: 8px; }
+#comments li.internal { background: #fff6dd; }
+.overdue-flag { color: #c00; font-weight: bold; margin-left: 5px; }
+.stat { text-align: center; padding: 10px 30px; border: 1px solid #ccc; }
+.current { font-weight: bold; text-decoration: none; }

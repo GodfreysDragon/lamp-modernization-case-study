@@ -1,0 +1,9 @@
+# modern/ has its own .gitignore for Laravel and Node files.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+# Docker volumes or dumps created when running legacy/ locally
+legacy/docker/data/
+*.sql.gz
