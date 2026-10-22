@@ -17,6 +17,14 @@ A complete, runnable before-and-after of modernizing a legacy PHP/MySQL applicat
 
 **The app:** *HelpDesk Pro*, a support-ticket system of the kind a small company built in 2009 and still runs. It has agents, customers, tickets with priorities and SLAs, comments and internal notes, and a dashboard. The legacy code is written from scratch to faithfully reproduce the patterns found in real codebases of that era, including the security holes, the copy-pasted business rules and the messy data.
 
+## The modern app
+
+![Dashboard: open, pending, closed and overdue counts, plus the agent's open tickets](docs/images/modern-dashboard.jpg)
+
+| Ticket list: search, filters, inline status change | Ticket detail: comments and internal notes |
+|---|---|
+| ![Ticket list](docs/images/modern-tickets.jpg) | ![Ticket detail](docs/images/modern-ticket.jpg) |
+
 ## Read the case study
 
 1. **[Legacy audit](docs/01-legacy-audit.md)**: 22 findings with file and line references, rated by severity
@@ -46,6 +54,12 @@ docker compose up        # http://localhost:8080/login.php (admin / admin123)
 **Import legacy → modern:** with the legacy containers running, set `LEGACY_DB_PORT=3307` and `LEGACY_DB_PASSWORD=hunter2` in `modern/.env`, then run `php artisan legacy:import --dry-run`.
 
 > ⚠️ The legacy app is **deliberately insecure**. Run it locally only and never expose it to a network.
+
+## Limitations
+
+- The legacy import is tested against an in-memory SQLite copy of the legacy schema, not yet against a live MySQL 5.7 instance.
+- No measured code coverage yet. Coverage is argued per finding in the [testing strategy](docs/04-testing-strategy.md).
+- The [business case](docs/05-business-case.md) figures are a worked example with stated assumptions, not client data.
 
 ## Repository layout
 
