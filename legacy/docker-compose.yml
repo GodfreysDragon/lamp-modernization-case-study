@@ -10,7 +10,8 @@ services:
     environment:
       DB_HOST: db
     depends_on:
-      - db
+      db:
+        condition: service_healthy   # first boot loads schema + seed before MySQL accepts connections
   db:
     image: mysql:5.7
     platform: linux/amd64
@@ -18,6 +19,11 @@ services:
       MYSQL_ROOT_PASSWORD: hunter2
       MYSQL_DATABASE: helpdesk
     command: --sql-mode=""
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-phunter2"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
     ports:
       - "3307:3306"   # so the modern app's `legacy:import` can read it
     volumes:

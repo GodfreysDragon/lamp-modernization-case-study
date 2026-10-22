@@ -17,6 +17,19 @@ A complete, runnable before-and-after of modernizing a legacy PHP/MySQL applicat
 
 **The app:** *HelpDesk Pro*, a support-ticket system of the kind a small company built in 2009 and still runs. It has agents, customers, tickets with priorities and SLAs, comments and internal notes, and a dashboard. The legacy code is written from scratch to faithfully reproduce the patterns found in real codebases of that era, including the security holes, the copy-pasted business rules and the messy data.
 
+## Before and after, same data
+
+The legacy ticket list, and the same tickets after `php artisan legacy:import` into the modern app:
+
+| Before: legacy PHP + jQuery | After: Laravel + Vue |
+|---|---|
+| ![Legacy ticket list](docs/images/legacy-tickets.jpg) | ![Modern ticket list showing the same imported tickets](docs/images/modern-tickets-imported.jpg) |
+
+Some things to compare:
+- **Ticket #6:** the legacy app shows it as due 12/30/2010 but not overdue. That's the December bug, where dates are compared as `m/d/Y` strings. The modern app flags it.
+- **Customers and priorities:** the orphaned customer shows as `()` in the legacy list and as an explicit "—" after import. Priority casing (`URGENT`) is normalized.
+- **Status dropdowns:** every legacy dropdown shows "Open" because of inconsistent status casing. The modern list shows each ticket's real status.
+
 ## The modern app
 
 ![Dashboard: open, pending, closed and overdue counts, plus the agent's open tickets](docs/images/modern-dashboard.jpg)
@@ -51,13 +64,12 @@ cd legacy
 docker compose up        # http://localhost:8080/login.php (admin / admin123)
 ```
 
-**Import legacy → modern:** with the legacy containers running, set `LEGACY_DB_PORT=3307` and `LEGACY_DB_PASSWORD=hunter2` in `modern/.env`, then run `php artisan legacy:import --dry-run`.
+**Import legacy → modern:** with the legacy containers running, set `LEGACY_DB_PORT=3307` and `LEGACY_DB_PASSWORD=hunter2` in `modern/.env`, then run `php artisan legacy:import --dry-run`. Against the bundled seed data, it imports 3 users, 3 customers, 6 tickets (one soft-deleted) and 3 comments. It warns about ticket #6, whose customer no longer exists, and comment #4, whose ticket no longer exists. Re-running it changes nothing. Imported users log in with their old passwords, and the MD5 hash is replaced with bcrypt on first login.
 
 > ⚠️ The legacy app is **deliberately insecure**. Run it locally only and never expose it to a network.
 
 ## Limitations
 
-- The legacy import is tested against an in-memory SQLite copy of the legacy schema, not yet against a live MySQL 5.7 instance.
 - No measured code coverage yet. Coverage is argued per finding in the [testing strategy](docs/04-testing-strategy.md).
 - The [business case](docs/05-business-case.md) figures are a worked example with stated assumptions, not client data.
 
