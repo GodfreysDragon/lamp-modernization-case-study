@@ -43,6 +43,9 @@ jobs:
 
       - name: Vitest
         run: npm test
+        env:
+          # laravel-vite-plugin blocks dev-server startup under CI; Vitest reuses that config
+          LARAVEL_BYPASS_ENV_CHECK: 1
 
   legacy-lint:
     runs-on: ubuntu-latest
