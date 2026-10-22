@@ -1,11 +1,13 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "cal-marusin/helpdesk-modern",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "HelpDesk Pro rebuilt in Laravel 13 + Vue 3 (Inertia): the \"after\" half of a legacy LAMP modernization case study.",
     "keywords": [
         "laravel",
-        "framework"
+        "vue",
+        "inertia",
+        "legacy-modernization"
     ],
     "license": "MIT",
     "require": {

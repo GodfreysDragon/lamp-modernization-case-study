@@ -1,5 +1,7 @@
 # Legacy LAMP → Laravel + Vue: a modernization case study
 
+[![CI](https://github.com/GodfreysDragon/lamp-modernization-case-study/actions/workflows/ci.yml/badge.svg)](https://github.com/GodfreysDragon/lamp-modernization-case-study/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A complete, runnable before-and-after of modernizing a legacy PHP/MySQL application. It's written for the agencies and in-house teams who have exactly this app sitting in their codebase.
 
 | | **Before:** [`legacy/`](legacy) | **After:** [`modern/`](modern) |
@@ -61,3 +63,7 @@ modern/                    the "after": Laravel 13 + Vue 3 (Inertia)
   tests/{Characterization,Unit,Feature}  +  resources/js/**/*.test.js
 docs/                      the case study
 ```
+
+## License
+
+[MIT](LICENSE)

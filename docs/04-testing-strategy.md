@@ -99,10 +99,11 @@ php artisan test --coverage --min=90
 
 Every controller action, form request, policy method, enum method and import branch has at least one test that hits it, but that's from reading the code, not a measured number. Add `--coverage --min=…` to CI once a coverage driver is available.
 
-## Suggested CI
+## CI
+
+The core steps are below. The full workflow is [`.github/workflows/ci.yml`](../.github/workflows/ci.yml), and it also runs `php -l` over `legacy/` on PHP 7.4.
 
 ```yaml
-# .github/workflows/tests.yml
 - run: composer install --no-interaction
 - run: npm ci && npm run build
 - run: vendor/bin/pint --test

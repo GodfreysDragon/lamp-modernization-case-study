@@ -1,6 +1,6 @@
 # Project summary: Legacy LAMP → Laravel + Vue case study
 
-_Last updated: 2026-10-04_
+_Last updated: 2026-10-21_
 
 ## What this is
 
@@ -79,8 +79,6 @@ Laravel 13 + Vue 3 (Inertia v3), Vite 8, Tailwind 4, Pest 5, Vitest.
 - **No measured code coverage.** The local PHP has neither Xdebug nor PCOV.
 - **Business-case numbers are a worked example**, not client data.
 - **The import has only run against SQLite** (in tests), not a real MySQL 5.7 legacy database.
-- **Laravel Boost is not installed**, although the generated `modern/CLAUDE.md` / `AGENTS.md` ask for it.
-- **No git repository or commits yet.**
 
 ## To-dos / next steps
 
@@ -92,9 +90,9 @@ Laravel 13 + Vue 3 (Inertia v3), Vite 8, Tailwind 4, Pest 5, Vitest.
 - [ ] Install PCOV or Xdebug, run `php artisan test --coverage`, and add the real number to the README and `docs/04-testing-strategy.md`
 
 ### Repository and CI
-- [ ] `git init`, add a root `.gitignore`, and make the initial commit
-- [ ] Add a GitHub Actions workflow (Pint, Pest, Vitest, build), using the outline in `docs/04-testing-strategy.md`
-- [ ] Decide whether to install Laravel Boost, or delete/replace the scaffold `modern/CLAUDE.md` and `AGENTS.md`
+- [x] `git init`, add a root `.gitignore`, and make the initial commit
+- [x] Add a GitHub Actions workflow: `.github/workflows/ci.yml` (Pint, Pest, Vitest and build on `modern/`, plus `php -l` on `legacy/`)
+- [x] Remove the Laravel Boost scaffold `modern/CLAUDE.md` and `AGENTS.md`, add a root `LICENSE`, and fix the `modern/composer.json` metadata
 
 ### Case-study polish
 - [ ] Add screenshots or a short GIF of legacy vs modern UI to the README
