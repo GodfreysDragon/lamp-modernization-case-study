@@ -14,6 +14,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 use Throwable;
 
 /**
@@ -70,7 +71,7 @@ class ImportLegacyData extends Command
         return self::SUCCESS;
     }
 
-    private function importUser(object $row): void
+    private function importUser(stdClass $row): void
     {
         $user = User::firstOrNew(['legacy_id' => $row->id]);
 
@@ -93,7 +94,7 @@ class ImportLegacyData extends Command
         $this->counts['users']++;
     }
 
-    private function importCustomer(object $row): void
+    private function importCustomer(stdClass $row): void
     {
         $created = $this->datetime($row->created) ?? Carbon::now();
 
@@ -111,7 +112,7 @@ class ImportLegacyData extends Command
         $this->counts['customers']++;
     }
 
-    private function importTicket(object $row): void
+    private function importTicket(stdClass $row): void
     {
         $customerId = $this->map['customers'][$row->customer_id] ?? null;
         if ($row->customer_id && ! $customerId) {
@@ -140,7 +141,7 @@ class ImportLegacyData extends Command
         $this->counts['tickets']++;
     }
 
-    private function importComment(object $row): void
+    private function importComment(stdClass $row): void
     {
         $ticketId = $this->map['tickets'][$row->ticket_id] ?? null;
         if (! $ticketId) {
@@ -191,7 +192,7 @@ class ImportLegacyData extends Command
         }
 
         try {
-            return Carbon::createFromFormat('!m/d/Y', $value)->endOfDay();
+            return Carbon::createFromFormat('!m/d/Y', $value)?->endOfDay();
         } catch (Throwable) {
             return null;
         }

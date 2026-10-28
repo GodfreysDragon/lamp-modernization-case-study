@@ -5,5 +5,5 @@ parameters:
         - .
     excludePaths:
         - docker/
-    level: 6
+    level: 8
     phpVersion: 70400
