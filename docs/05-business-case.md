@@ -52,7 +52,7 @@ Estimated effort for an app of this size (~10 screens, 4 tables, one integration
 
 | Capability | Before | After |
 |---|---|---|
-| Ship a change safely | Days of manual clicking and crossed fingers | 111 automated tests in 7 seconds on every commit |
+| Ship a change safely | Days of manual clicking and crossed fingers | 112 automated tests in about 20 seconds on every commit |
 | Hire for it | "PHP 5-era procedural, no framework": a small, shrinking pool | Laravel + Vue: one of the largest PHP/JS talent pools |
 | Onboard a new developer | Weeks reading the source | Standard Laravel conventions; `composer setup` and go |
 | Pass a security questionnaire | Fail | Bound queries, CSRF, bcrypt, rate limiting, escaped output, supported runtime |
