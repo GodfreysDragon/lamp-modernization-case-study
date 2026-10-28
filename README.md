@@ -4,6 +4,8 @@
 
 A complete, runnable before-and-after of modernizing a legacy PHP/MySQL application. It's written for the agencies and in-house teams who have exactly this app sitting in their codebase.
 
+![Demo: log in, create a ticket with customer autocomplete, change its status inline, and add a comment whose HTML is shown as text](docs/images/demo.gif)
+
 | | **Before:** [`legacy/`](legacy) | **After:** [`modern/`](modern) |
 |---|---|---|
 | Stack | Procedural PHP 7.4, mysqli, jQuery 1.8, MyISAM | Laravel 13, Vue 3 + Inertia, Vite, Tailwind 4 |
