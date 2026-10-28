@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Enums\TicketStatus;
 use App\Http\Resources\TicketResource;
 use App\Models\Ticket;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(#[CurrentUser] User $user): Response
     {
         // One grouped query instead of one COUNT(*) per status.
         $totals = Ticket::query()
@@ -25,7 +26,7 @@ class DashboardController extends Controller
 
         // Eager-load the customer and count the comments up front, so the cost is
         // three queries whether there are 5 tickets or 500.
-        $mine = $request->user()
+        $mine = $user
             ->assignedTickets()
             ->unresolved()
             ->with('customer')

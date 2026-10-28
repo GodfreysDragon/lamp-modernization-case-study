@@ -6,6 +6,6 @@ parameters:
         - app/
         - database/
         - routes/
-    level: 6
+    level: 8
     # Read each model's casts() body, so enum and datetime casts are typed.
     parseModelCastsMethod: true

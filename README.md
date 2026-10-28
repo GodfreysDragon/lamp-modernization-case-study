@@ -4,6 +4,8 @@
 
 A complete, runnable before-and-after of modernizing a legacy PHP/MySQL application. It's written for the agencies and in-house teams who have exactly this app sitting in their codebase.
 
+![Demo: log in, create a ticket with customer autocomplete, change its status inline, and add a comment whose HTML is shown as text](docs/images/demo.gif)
+
 | | **Before:** [`legacy/`](legacy) | **After:** [`modern/`](modern) |
 |---|---|---|
 | Stack | Procedural PHP 7.4, mysqli, jQuery 1.8, MyISAM | Laravel 13, Vue 3 + Inertia, Vite, Tailwind 4 |
@@ -14,7 +16,7 @@ A complete, runnable before-and-after of modernizing a legacy PHP/MySQL applicat
 | Business rules | SLA defined twice (inconsistently); overdue check broken every December | One enum, one model method, unit-tested |
 | Tests | None | **112** (98 Pest + 1 real-browser + 13 Vitest), ~20s |
 | Code coverage | — | **95.1%** (measured in CI, must stay above 90%) |
-| Static analysis (PHPStan level 6) | 43 errors | **0** |
+| Static analysis (PHPStan level 8) | 43 errors | **0** |
 | Data migration | — | Idempotent, dry-runnable `php artisan legacy:import` that cleans up 15 years of drift |
 
 **The app:** *HelpDesk Pro*, a support-ticket system of the kind a small company built in 2009 and still runs. It has agents, customers, tickets with priorities and SLAs, comments and internal notes, and a dashboard. The legacy code is written from scratch to faithfully reproduce the patterns found in real codebases of that era, including the security holes, the copy-pasted business rules and the messy data.

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -13,7 +15,7 @@ use Inertia\Response;
 
 class CustomerController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request, #[CurrentUser] User $user): Response
     {
         $search = $request->string('q')->limit(100, '')->toString();
 
@@ -27,7 +29,7 @@ class CustomerController extends Controller
         return Inertia::render('customers/Index', [
             'customers' => CustomerResource::collection($customers),
             'filters' => ['q' => $search],
-            'can' => ['delete' => $request->user()->is_admin],
+            'can' => ['delete' => $user->is_admin],
         ]);
     }
 

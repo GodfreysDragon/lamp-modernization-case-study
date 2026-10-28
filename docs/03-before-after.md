@@ -8,7 +8,7 @@ Side-by-side comparisons of the changes that matter most. Every "after" snippet 
 - [Page scripts → controller + form request + policy](#page-scripts--controller--form-request--policy)
 - [jQuery → Vue components](#jquery--vue-components)
 - [MD5 → bcrypt without a reset email](#md5--bcrypt-without-a-reset-email)
-- [No tests → 111 tests](#no-tests--111-tests)
+- [No tests → 112 tests](#no-tests--112-tests)
 
 ---
 
@@ -294,13 +294,14 @@ Plus throttling, which the legacy login never had: 5 attempts per minute per use
 
 ---
 
-## No tests → 111 tests
+## No tests → 112 tests
 
 | Suite | Tool | Tests | What it proves |
 |---|---|---:|---|
 | Characterization | Pest | 10 | What the legacy code *actually* did, bugs included |
 | Unit | Pest | 22 | SLA rules, legacy value mapping, overdue logic across year boundaries |
 | Feature | Pest | 66 | Every route: auth, validation, authorization, filters, N+1 limits, the import command |
+| Browser | Pest + Playwright | 1 | The main agent workflow end to end in a real Chromium |
 | Components | Vitest | 13 | Rendering, XSS escaping, pagination |
 
 See [04-testing-strategy.md](04-testing-strategy.md).

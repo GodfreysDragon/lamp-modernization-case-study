@@ -107,14 +107,14 @@ php artisan test --coverage --min=90
 
 ## Static analysis
 
-[Larastan](https://github.com/larastan/larastan) (PHPStan for Laravel) checks `modern/` at **level 6** in CI, with zero errors. The same level on the legacy code finds **43**, including variables that may be used before they're set. PHPStan checks types and logic, not security, so it doesn't see the SQL injection or XSS. That's what the audit and the regression tests above are for.
+[Larastan](https://github.com/larastan/larastan) (PHPStan for Laravel) checks `modern/` at **level 8** in CI, with zero errors. The same level on the legacy code finds **43**, including variables that may be used before they're set. PHPStan checks types and logic, not security, so it doesn't see the SQL injection or XSS. That's what the audit and the regression tests above are for.
 
 ```bash
 cd modern && vendor/bin/phpstan analyse                     # modern: 0 errors
 cd .. && modern/vendor/bin/phpstan analyse -c legacy/phpstan.neon  # legacy: 43 errors
 ```
 
-The jump to level 7 is all in the legacy import command, which reads untyped rows straight from the old database.
+Getting from level 6 to 8 meant typing the import command's legacy rows as `stdClass`, injecting the signed-in user with `#[CurrentUser] User $user` instead of the nullable `$request->user()`, and handling the `null` that `Carbon::createFromFormat()` can return. Level 9 would only add complaints about casting `mixed` from raw query results.
 
 ## CI
 

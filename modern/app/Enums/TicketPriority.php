@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use Carbon\CarbonInterface;
+use Illuminate\Support\Carbon;
 
 enum TicketPriority: string
 {
@@ -30,15 +31,9 @@ enum TicketPriority: string
         };
     }
 
-    /**
-     * @template T of CarbonInterface
-     *
-     * @param  T  $from
-     * @return T
-     */
-    public function dueFrom(CarbonInterface $from): CarbonInterface
+    public function dueFrom(CarbonInterface $from): Carbon
     {
-        return $from->copy()->addHours($this->slaHours());
+        return Carbon::instance($from)->addHours($this->slaHours());
     }
 
     /**

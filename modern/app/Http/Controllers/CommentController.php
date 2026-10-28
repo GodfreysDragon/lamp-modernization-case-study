@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function __invoke(Request $request, Ticket $ticket): RedirectResponse
+    public function __invoke(Request $request, Ticket $ticket, #[CurrentUser] User $user): RedirectResponse
     {
         $validated = $request->validate([
             'body' => ['required', 'string', 'max:10000'],
@@ -19,7 +21,7 @@ class CommentController extends Controller
         // Vue's {{ }} interpolation always escapes, so there's no stored-XSS path.
         $ticket->comments()->create([
             ...$validated,
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
         ]);
 
         return back()->with('success', 'Comment added.');
